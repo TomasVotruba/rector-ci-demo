@@ -1,0 +1,23 @@
+os: linux
+language: php
+
+php:
+    - '7.2'
+
+install:
+    # install composer dependencies for all stages
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+
+jobs:
+    include:
+        -
+            stage: test
+            name: "Tests"
+            script:
+                - vendor/bin/phpunit
+
+        -
+            stage: test
+            name: "Code Review"
+            script:
+                - vendor/bin/rector process --config rector-ci.yaml --dry-run
